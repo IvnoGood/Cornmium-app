@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Cornmium browser</title>
+
+  <style>
+    #browser-tools {
+      display: flex;
+      width: 100%;
+      padding-bottom: 3px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="browser-tools">
+    <div id="button-container">
+      <button id="return-button">&larr;</button>
+      <button id="forward-button">&rarr;</button>
+      <button id="reload-button">&#x21bb;</button>
+      <button id="search-button">&#128270;</button>
+      <button id="new-window-button">+</button>
+    </div>
+    <form>
+      <input type="text" name="research" id="search-bar" required>
+    </form>
+    <button id="go"></button>
+  </div>
+  <webview id="webview" src="https://google.com"></webview>
+  <script type="module" src="/src/renderer.js"></script>
+</body>
+
+</html>
