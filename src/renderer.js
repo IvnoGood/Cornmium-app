@@ -6,6 +6,7 @@ const reloadButton = document.getElementById("reload-button");
 const searchButton = document.getElementById("search-button");
 const newWindowButton = document.getElementById("new-window-button");
 const goButton = document.getElementById("go");
+const consoleButton = document.getElementById("console-button");
 
 
 const searchBar = document.getElementById("search-bar");
@@ -19,6 +20,10 @@ searchBar.addEventListener("keydown", (event) => {
         console.log(searchBar.value);
         HandleUrl()
     }
+});
+
+consoleButton.addEventListener("click", () => {
+    webView.openDevTools()
 });
 
 webView.addEventListener("did-navigate", (event) => {
@@ -40,7 +45,7 @@ reloadButton.addEventListener("click", () => {
 
 searchButton.addEventListener("click", () => {
     console.log("research clicked")
-    let url = "https://google.com/";
+    let url = "http://cornmium.web.app";
     searchBar.value = url
     webView.src = url
 })
@@ -59,10 +64,11 @@ function HandleUrl() {
     const inputurl = searchBar.value
     searchBar.value
 
-    if (inputurl.startsWith("https://") || inputurl.startsWith("https://")) {
+    if (inputurl.startsWith("https://") || inputurl.startsWith("http://")) {
         url = inputurl
     } else {
-        url = "https://" + inputurl
+
+        url = `https://cornmium.web.app/pages/research?research=${inputurl}&page=1`
     }
 
     webView.src = url;

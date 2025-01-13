@@ -6,11 +6,6 @@
   <title>Cornmium browser</title>
 
   <style>
-    #browser-tools {
-      display: flex;
-      width: 100%;
-      padding-bottom: 3px;
-    }
   </style>
 </head>
 
@@ -22,13 +17,14 @@
       <button id="reload-button">&#x21bb;</button>
       <button id="search-button">&#128270;</button>
       <button id="new-window-button">+</button>
+      <button id="console-button">&#8512;</button>
     </div>
     <form>
       <input type="text" name="research" id="search-bar" required>
     </form>
     <button id="go"></button>
   </div>
-  <webview id="webview" src="https://google.com"></webview>
+  <webview id="webview" src="http://cornmium.web.app"></webview>
   <script type="module" src="/src/renderer.js"></script>
 </body>
 

@@ -1,47 +1,57 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('node:path');
+import contextMenu from 'electron-context-menu'; // Using ESM
 
-// Handle creating/removing shortcuts on Windows when installing/uninstalling.
+// Set up the context menu
+contextMenu({
+  prepend: (params, browserWindow) => [
+    {
+      label: 'Rainbow',
+      // Only show when right-clicking images
+      visible: params.mediaType === 'image',
+    },
+  ],
+});
+
+// Handle creating/removing shortcuts on Windows when installing/uninstalling
 if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
+let mainWindow; // Declare globally to manage the main window
+
+// Function to create a new browser window
 const createWindow = () => {
-  // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     autoHideMenuBar: true,
     icon: path.join(__dirname, 'icon.ico'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
-      webviewTag: true
+      webviewTag: true,
     },
   });
 
-  mainWindow.setAlwaysOnTop(true, "screen-saver");     // - 2 -
+  mainWindow.setAlwaysOnTop(true, 'screen-saver');
   mainWindow.setVisibleOnAllWorkspaces(true);
 
-
-  // and load the index.html of the app.
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
   } else {
-    mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
+    mainWindow.loadFile(
+      path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`)
+    );
   }
 
-  // Open the DevTools.
-  //TODO: mainWindow.webContents.openDevTools();
+  // Uncomment to open DevTools
+  // mainWindow.webContents.openDevTools();
 };
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   createWindow();
 
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
+  // macOS-specific behavior: Re-create a window if none exist when the app is activated
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow();
@@ -49,13 +59,14 @@ app.whenReady().then(() => {
   });
 });
 
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
+// Quit the app when all windows are closed, except on macOS
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
   }
 });
 
-ipcMain.on("new-window", createWindow)
+// Listen for IPC messages to create new windows
+ipcMain.on('new-window', () => {
+  createWindow();
+});

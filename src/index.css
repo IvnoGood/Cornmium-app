@@ -3,11 +3,17 @@ body {
     Arial, sans-serif;
   background: linear-gradient(to right, #3a8dde, #a1c4fd);
   margin: 0;
+  height: 100%;
+}
+
+#browser-tools {
+  display: flex;
+  width: 100%;
+  margin-bottom: 3px;
 }
 
 #button-container {
   display: contents;
-
 }
 
 #search-bar {
@@ -39,5 +45,6 @@ button:hover {
 
 
 webview {
-  height: 96vh;
+  height: 94vh;
+  /* height: 100%; */
 }
